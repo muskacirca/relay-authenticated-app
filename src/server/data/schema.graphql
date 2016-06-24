@@ -1,0 +1,67 @@
+schema {
+  query: Root
+  mutation: Mutation
+}
+
+input AddShopInput {
+  name: String!
+  description: String!
+  clientMutationId: String!
+}
+
+type AddShopPayload {
+  viewer: Viewer
+  shopEdge: ShopTypeEdge
+  clientMutationId: String!
+}
+
+type Mutation {
+  addShop(input: AddShopInput!): AddShopPayload
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Root {
+  viewer(viewerId: Int!): Viewer
+  node(id: ID!): Node
+}
+
+type ShopType implements Node {
+  id: ID!
+  name: String
+  description: String
+}
+
+type ShopTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ShopTypeEdge]
+}
+
+type ShopTypeEdge {
+  node: ShopType
+  cursor: String!
+}
+
+type UserType implements Node {
+  id: ID!
+  firstName: String
+  lastName: String
+  login: String
+  email: String
+  enabled: Boolean
+}
+
+type Viewer implements Node {
+  id: ID!
+  user: UserType
+  shops(after: String, first: Int, before: String, last: Int): ShopTypeConnection
+}
