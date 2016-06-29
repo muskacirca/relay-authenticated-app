@@ -75,7 +75,7 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _history = __webpack_require__(658);
+	var _history = __webpack_require__(659);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53693,7 +53693,8 @@
 	            prepareParams: function prepareParams() {
 	                return getUser();
 	            } }),
-	        _react2.default.createElement(_reactRouter.Route, { path: 'shops', component: _Shops2.default, queries: _ViewerQueries2.default, prepareParams: function prepareParams() {
+	        _react2.default.createElement(_reactRouter.Route, { path: 'shops', component: _Shops2.default, queries: _ViewerQueries2.default, onEnter: requireAuth,
+	            prepareParams: function prepareParams() {
 	                return getUser();
 	            } })
 	    ),
@@ -72215,17 +72216,9 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactRelay = __webpack_require__(39);
+	var _RegisterForm = __webpack_require__(657);
 
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	var _reactRouter = __webpack_require__(567);
-
-	var _reactRouter2 = _interopRequireDefault(_reactRouter);
-
-	var _Auth = __webpack_require__(657);
-
-	var _Auth2 = _interopRequireDefault(_Auth);
+	var _RegisterForm2 = _interopRequireDefault(_RegisterForm);
 
 	var _AuthService = __webpack_require__(627);
 
@@ -72342,52 +72335,58 @@
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'form',
-	                { className: 'commentForm', onSubmit: this.handleSubmit.bind(this) },
+	                'div',
+	                null,
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'form-group' },
+	                    'form',
+	                    { className: 'commentForm', onSubmit: this.handleSubmit.bind(this) },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'input-group' },
+	                        { className: 'form-group' },
 	                        _react2.default.createElement(
-	                            'span',
-	                            { className: 'input-group-addon', id: 'basic-addon1' },
-	                            _react2.default.createElement('i', { className: 'fa fa-user', 'aria-hidden': 'true' })
-	                        ),
-	                        _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'loginField', placeholder: 'login',
-	                            'aria-describedby': 'basic-addon1' })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'form-group' },
+	                            'div',
+	                            { className: 'input-group' },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'input-group-addon', id: 'basic-addon1' },
+	                                _react2.default.createElement('i', { className: 'fa fa-user', 'aria-hidden': 'true' })
+	                            ),
+	                            _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'loginField', placeholder: 'login',
+	                                'aria-describedby': 'basic-addon1' })
+	                        )
+	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'input-group' },
+	                        { className: 'form-group' },
 	                        _react2.default.createElement(
-	                            'span',
-	                            { className: 'input-group-addon', id: 'basic-addon1' },
-	                            _react2.default.createElement('i', { className: 'fa fa-key', 'aria-hidden': 'true' })
-	                        ),
-	                        _react2.default.createElement('input', { type: 'password', className: 'form-control', ref: 'passwordField', placeholder: 'password',
-	                            'aria-describedby': 'basic-addon1' })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'button',
-	                    { type: 'submit', className: 'btn btn-default primary btn-block' },
-	                    'Login'
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    this.state.error && _react2.default.createElement(
-	                        'p',
+	                            'div',
+	                            { className: 'input-group' },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'input-group-addon', id: 'basic-addon1' },
+	                                _react2.default.createElement('i', { className: 'fa fa-key', 'aria-hidden': 'true' })
+	                            ),
+	                            _react2.default.createElement('input', { type: 'password', className: 'form-control', ref: 'passwordField', placeholder: 'password',
+	                                'aria-describedby': 'basic-addon1' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'button',
+	                        { type: 'submit', className: 'btn btn-default primary btn-block' },
+	                        'Login'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
 	                        null,
-	                        'Bad login information'
+	                        this.state.error && _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            'Bad login information'
+	                        )
 	                    )
-	                )
+	                ),
+	                _react2.default.createElement('hr', null),
+	                _react2.default.createElement(_RegisterForm2.default, null)
 	            );
 	        }
 	    }]);
@@ -72403,62 +72402,319 @@
 
 /***/ },
 /* 657 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = {
-	  login: function login(email, pass, cb) {
-	    var _this = this;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	    cb = arguments[arguments.length - 1];
-	    if (localStorage.token) {
-	      if (cb) {
-	        cb(true);
-	      }
-	      this.onChange(true);
-	      return;
-	    }
-	    pretendRequest(email, pass, function (res) {
-	      if (res.authenticated) {
-	        localStorage.token = res.token;
-	        if (cb) cb(true);
-	        _this.onChange(true);
-	      } else {
-	        if (cb) cb(false);
-	        _this.onChange(false);
-	      }
-	    });
-	  },
-	  getToken: function getToken() {
-	    return localStorage.token;
-	  },
-	  logout: function logout(cb) {
-	    delete localStorage.token;
-	    if (cb) cb();
-	    this.onChange(false);
-	  },
-	  loggedIn: function loggedIn() {
-	    return localStorage.token != undefined;
-	  },
-	  onChange: function onChange() {}
-	};
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	function pretendRequest(email, pass, cb) {
-	  setTimeout(function () {
-	    if (email === 'a' && pass === 'a') {
-	      cb({
-	        authenticated: true,
-	        token: Math.random().toString(36).substring(7)
-	      });
-	    } else {
-	      cb({ authenticated: false });
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(39);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _AddUserMutation = __webpack_require__(658);
+
+	var _AddUserMutation2 = _interopRequireDefault(_AddUserMutation);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RegisterForm = function (_React$Component) {
+	    _inherits(RegisterForm, _React$Component);
+
+	    function RegisterForm(props) {
+	        _classCallCheck(this, RegisterForm);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(RegisterForm).call(this, props));
 	    }
-	  }, 0);
-	}
+
+	    _createClass(RegisterForm, [{
+	        key: 'onAddEvent',
+	        value: function onAddEvent(e) {
+
+	            e.preventDefault();
+
+	            var login = this.refs.registerFormEventName.value;
+	            var password = this.refs.registerFormPassword.value;
+	            var confirmPassword = this.refs.registerFormConfirmPassword.value;
+	            var email = this.refs.registerFormEmail.value;
+	            var confirmmEmail = this.refs.registerFormConfirmPassword.value;
+
+	            var addUserMutation = new _AddUserMutation2.default({
+	                login: login,
+	                password: password,
+	                email: email
+	            });
+
+	            var onSuccess = function onSuccess(response) {
+	                console.log('user added successfully');
+	            };
+
+	            var onFailure = function onFailure(transaction) {
+	                return console.log("error adding user");
+	            };
+
+	            _reactRelay2.default.Store.commitUpdate(addUserMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'form',
+	                    { className: 'form-horizontal', name: 'registerForm' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'registerFormEventName', className: 'col-md-3 control-label' },
+	                            'login'
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-9' },
+	                            _react2.default.createElement('input', { ref: 'registerFormEventName', id: 'registerFormEventName', type: 'text', className: 'form-control', placeholder: 'name' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'registerFormPassword', className: 'col-md-3 control-label' },
+	                            'password'
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-9' },
+	                            _react2.default.createElement('input', { ref: 'registerFormPassword', id: 'registerFormPassword', type: 'text', className: 'form-control', placeholder: 'password' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'registerFormEventDescription', className: 'col-md-3 control-label' },
+	                            'confirm password'
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-9' },
+	                            _react2.default.createElement('input', { ref: 'registerFormConfirmPassword', id: 'registerFormConfirmPassword', className: 'form-control', placeholder: 'confirm password' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'registerFormEmail', className: 'col-md-3 control-label' },
+	                            'email'
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-9' },
+	                            _react2.default.createElement('input', { ref: 'registerFormEmail', id: 'registerFormEmail', className: 'form-control', placeholder: 'confirm email' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: 'registerFormConfirmEmail', className: 'col-md-3 control-label' },
+	                            'confirm email'
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-9' },
+	                            _react2.default.createElement('input', { ref: 'registerFormConfirmEmail', id: 'registerFormConfirmEmail', className: 'form-control', placeholder: 'confirm email' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-default', type: 'submit', onClick: this.onAddEvent.bind(this) },
+	                            'OK'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return RegisterForm;
+	}(_react2.default.Component);
+
+	exports.default = RegisterForm;
 
 /***/ },
 /* 658 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRelay = __webpack_require__(39);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddUserMutation = function (_Relay$Mutation) {
+	    _inherits(AddUserMutation, _Relay$Mutation);
+
+	    function AddUserMutation() {
+	        _classCallCheck(this, AddUserMutation);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddUserMutation).apply(this, arguments));
+	    }
+
+	    _createClass(AddUserMutation, [{
+	        key: 'getMutation',
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: 'Call',
+	                        metadata: {},
+	                        name: 'addUser',
+	                        value: {
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'String'
+	                    }],
+	                    kind: 'Mutation',
+	                    metadata: {
+	                        inputType: 'AddUserInput!'
+	                    },
+	                    name: 'AddUserMutation',
+	                    responseType: 'AddUserPayload'
+	                };
+	            }();
+	        }
+	    }, {
+	        key: 'getFatQuery',
+	        value: function getFatQuery() {
+
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'viewer',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'Viewer'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'AddUserMutation_ValueRelayQL',
+	                    type: 'AddUserPayload'
+	                };
+	            }();
+	        }
+	    }, {
+	        key: 'getConfigs',
+	        value: function getConfigs() {
+
+	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    viewer: "1"
+	                }
+	            }];
+	        }
+	    }, {
+	        key: 'getVariables',
+	        value: function getVariables() {
+	            return {
+	                login: this.props.login,
+	                password: this.props.password,
+	                email: this.props.email
+	            };
+	        }
+	    }]);
+
+	    return AddUserMutation;
+	}(_reactRelay2.default.Mutation);
+
+	AddUserMutation.fragments = {
+	    viewer: function viewer() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: 'id',
+	                    kind: 'Field',
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: 'ID'
+	                }],
+	                id: _reactRelay2.default.QL.__id(),
+	                kind: 'Fragment',
+	                metadata: {},
+	                name: 'AddUserMutation_ViewerRelayQL',
+	                type: 'Viewer'
+	            };
+	        }();
+	    }
+	};
+	exports.default = AddUserMutation;
+
+/***/ },
+/* 659 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72499,7 +72755,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(659);
+	var _useBeforeUnload2 = __webpack_require__(660);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -72519,13 +72775,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(660);
+	var _enableBeforeUnload2 = __webpack_require__(661);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(661);
+	var _enableQueries2 = __webpack_require__(662);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -72534,7 +72790,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 659 */
+/* 660 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -72651,7 +72907,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 660 */
+/* 661 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72664,7 +72920,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(659);
+	var _useBeforeUnload = __webpack_require__(660);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -72672,7 +72928,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 661 */
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

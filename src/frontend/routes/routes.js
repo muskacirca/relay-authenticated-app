@@ -7,7 +7,7 @@ import ViewerQuery from '../queries/ViewerQueries'
 
 import MainApp from '../components/MainApp'
 import Shops from '../components/shop/Shops'
-import Login from '../components/login'
+import Login from '../components/login/login'
 
 
 function logout(nextState, replace) {

@@ -15,8 +15,21 @@ type AddShopPayload {
   clientMutationId: String!
 }
 
+input AddUserInput {
+  login: String!
+  password: String!
+  email: String!
+  clientMutationId: String!
+}
+
+type AddUserPayload {
+  viewer: Viewer
+  clientMutationId: String!
+}
+
 type Mutation {
   addShop(input: AddShopInput!): AddShopPayload
+  addUser(input: AddUserInput!): AddUserPayload
 }
 
 interface Node {
@@ -53,11 +66,9 @@ type ShopTypeEdge {
 
 type UserType implements Node {
   id: ID!
-  firstName: String
-  lastName: String
   login: String
+  password: String
   email: String
-  enabled: Boolean
 }
 
 type Viewer implements Node {

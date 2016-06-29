@@ -57,7 +57,7 @@ module.exports =
 
 	var _schema = __webpack_require__(3);
 
-	var _expressGraphql = __webpack_require__(11);
+	var _expressGraphql = __webpack_require__(12);
 
 	var _expressGraphql2 = _interopRequireDefault(_expressGraphql);
 
@@ -65,15 +65,15 @@ module.exports =
 
 	var _database2 = _interopRequireDefault(_database);
 
-	var _jsonwebtoken = __webpack_require__(12);
+	var _jsonwebtoken = __webpack_require__(13);
 
 	var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
-	var _bodyParser = __webpack_require__(13);
+	var _bodyParser = __webpack_require__(14);
 
 	var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-	var _crypto = __webpack_require__(14);
+	var _crypto = __webpack_require__(15);
 
 	var _crypto2 = _interopRequireDefault(_crypto);
 
@@ -170,12 +170,15 @@ module.exports =
 
 	var _ShopMutations = __webpack_require__(5);
 
+	var _UserMutation = __webpack_require__(11);
+
 	var _Model = __webpack_require__(9);
 
 	var Mutation = new _graphql.GraphQLObjectType({
 	    name: 'Mutation',
 	    fields: {
-	        addShop: _ShopMutations.AddShopMutation
+	        addShop: _ShopMutations.AddShopMutation,
+	        addUser: _UserMutation.AddUserMutation
 	    }
 	});
 
@@ -414,7 +417,7 @@ module.exports =
 	        return ViewerType;
 	    } else if (obj.name != undefined) {
 	        return ShopType;
-	    } else if (obj.firstName) {
+	    } else if (obj.email) {
 	        return UserType;
 	    }
 	    return null;
@@ -443,34 +446,22 @@ module.exports =
 	    description: 'It display the information related to an user',
 	    fields: {
 	        id: (0, _graphqlRelay.globalIdField)('UserType'),
-	        firstName: {
-	            type: _graphql.GraphQLString,
-	            resolve: function resolve(obj) {
-	                return obj.firstName;
-	            }
-	        },
-	        lastName: {
-	            type: _graphql.GraphQLString,
-	            resolve: function resolve(obj) {
-	                return obj.lastName;
-	            }
-	        },
 	        login: {
 	            type: _graphql.GraphQLString,
 	            resolve: function resolve(obj) {
 	                return obj.login;
 	            }
 	        },
+	        password: {
+	            type: _graphql.GraphQLString,
+	            resolve: function resolve(obj) {
+	                return obj.password;
+	            }
+	        },
 	        email: {
 	            type: _graphql.GraphQLString,
 	            resolve: function resolve(obj) {
 	                return obj.email;
-	            }
-	        },
-	        enabled: {
-	            type: _graphql.GraphQLBoolean,
-	            resolve: function resolve(obj) {
-	                return obj.enabled;
 	            }
 	        }
 	    },
@@ -598,24 +589,79 @@ module.exports =
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("express-graphql");
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AddUserMutation = undefined;
+
+	var _graphql = __webpack_require__(4);
+
+	var _graphqlRelay = __webpack_require__(6);
+
+	var _database = __webpack_require__(7);
+
+	var _database2 = _interopRequireDefault(_database);
+
+	var _Model = __webpack_require__(9);
+
+	var _UserStore = __webpack_require__(10);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AddUserMutation = exports.AddUserMutation = new _graphqlRelay.mutationWithClientMutationId({
+	    name: 'AddUser',
+	    description: 'Function to add a user',
+	    inputFields: {
+	        login: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        password: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        email: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+
+	    },
+	    outputFields: {
+	        viewer: {
+	            type: _Model.ViewerType,
+	            resolve: function resolve(obj) {
+	                console.log("In EventMutation output field viewer : " + JSON.stringify(obj.viewerId));
+	                return (0, _UserStore.getViewer)((0, _graphqlRelay.toGlobalId)('UserType', obj.id));
+	            }
+	        }
+	    },
+	    mutateAndGetPayload: function mutateAndGetPayload(_ref) {
+	        var login = _ref.login;
+	        var password = _ref.password;
+	        var email = _ref.email;
+
+
+	        return _database2.default.models.user.create({ login: login, password: password, email: email }).then(function (r) {
+	            return _database2.default.models.user.findOne({ where: { email: email } });
+	        });
+	    }
+	});
 
 /***/ },
 /* 12 */
 /***/ function(module, exports) {
 
-	module.exports = require("jsonwebtoken");
+	module.exports = require("express-graphql");
 
 /***/ },
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = require("body-parser");
+	module.exports = require("jsonwebtoken");
 
 /***/ },
 /* 14 */
+/***/ function(module, exports) {
+
+	module.exports = require("body-parser");
+
+/***/ },
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = require("crypto");

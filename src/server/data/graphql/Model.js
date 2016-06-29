@@ -54,7 +54,7 @@ var { nodeInterface, nodeField } = nodeDefinitions(
             return ViewerType
         } else if(obj.name != undefined) {
             return ShopType
-        } else if(obj.firstName) {
+        } else if(obj.email) {
             return UserType
         }
         return null
@@ -78,25 +78,17 @@ export var UserType = new GraphQLObjectType({
     description: 'It display the information related to an user',
     fields: {
         id: globalIdField('UserType'),
-        firstName: {
-            type: GraphQLString,
-            resolve: (obj) => obj.firstName
-        },
-        lastName: {
-            type: GraphQLString,
-            resolve: (obj) => obj.lastName
-        },
         login: {
             type: GraphQLString,
             resolve: (obj) => obj.login
         },
+        password: {
+            type: GraphQLString,
+            resolve: (obj) => obj.password
+        },
         email: {
             type: GraphQLString,
             resolve: (obj) => obj.email
-        },
-        enabled: {
-            type: GraphQLBoolean,
-            resolve: (obj) => obj.enabled
         }
     },
     interfaces: [nodeInterface]

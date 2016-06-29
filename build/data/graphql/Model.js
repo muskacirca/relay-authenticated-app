@@ -45,7 +45,7 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
         return ViewerType;
     } else if (obj.name != undefined) {
         return ShopType;
-    } else if (obj.firstName) {
+    } else if (obj.email) {
         return UserType;
     }
     return null;
@@ -74,34 +74,22 @@ var UserType = exports.UserType = new _graphql.GraphQLObjectType({
     description: 'It display the information related to an user',
     fields: {
         id: (0, _graphqlRelay.globalIdField)('UserType'),
-        firstName: {
-            type: _graphql.GraphQLString,
-            resolve: function resolve(obj) {
-                return obj.firstName;
-            }
-        },
-        lastName: {
-            type: _graphql.GraphQLString,
-            resolve: function resolve(obj) {
-                return obj.lastName;
-            }
-        },
         login: {
             type: _graphql.GraphQLString,
             resolve: function resolve(obj) {
                 return obj.login;
             }
         },
+        password: {
+            type: _graphql.GraphQLString,
+            resolve: function resolve(obj) {
+                return obj.password;
+            }
+        },
         email: {
             type: _graphql.GraphQLString,
             resolve: function resolve(obj) {
                 return obj.email;
-            }
-        },
-        enabled: {
-            type: _graphql.GraphQLBoolean,
-            resolve: function resolve(obj) {
-                return obj.enabled;
             }
         }
     },

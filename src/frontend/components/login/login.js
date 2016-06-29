@@ -1,9 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Relay from 'react-relay'
-import Router from 'react-router'
-import auth from './utils/Auth.js'
-import AuthService from './utils/AuthService.js'
+import RegisterForm from './RegisterForm'
+import AuthService from '../utils/AuthService.js'
 
 class LoginBox extends React.Component {
 
@@ -65,32 +63,39 @@ class LoginForm extends React.Component {
     }
 
     render() {
-        return  <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
-                    <div className="form-group">
-                        <div className="input-group">
-                            <span className="input-group-addon" id="basic-addon1">
-                                <i className="fa fa-user" aria-hidden="true"></i>
-                            </span>
-                            <input type="text" className="form-control" ref="loginField" placeholder="login"
-                                   aria-describedby="basic-addon1"/>
+        return  <div>
+                    <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
+                        <div className="form-group">
+                            <div className="input-group">
+                                    <span className="input-group-addon" id="basic-addon1">
+                                        <i className="fa fa-user" aria-hidden="true"></i>
+                                    </span>
+                                <input type="text" className="form-control" ref="loginField" placeholder="login"
+                                       aria-describedby="basic-addon1"/>
+                            </div>
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="input-group">
-                            <span className="input-group-addon" id="basic-addon1">
-                                <i className="fa fa-key" aria-hidden="true"></i>
-                            </span>
-                            <input type="password" className="form-control" ref="passwordField" placeholder="password"
-                                   aria-describedby="basic-addon1"/>
+                        <div className="form-group">
+                            <div className="input-group">
+                                    <span className="input-group-addon" id="basic-addon1">
+                                        <i className="fa fa-key" aria-hidden="true"></i>
+                                    </span>
+                                <input type="password" className="form-control" ref="passwordField" placeholder="password"
+                                       aria-describedby="basic-addon1"/>
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" className="btn btn-default primary btn-block">Login</button>
-                    <div>
-                        {this.state.error && (
-                            <p>Bad login information</p>
-                        )}
-                    </div>
-                </form>
+                        <button type="submit" className="btn btn-default primary btn-block">Login</button>
+                        <div>
+                            {this.state.error && (
+                                <p>Bad login information</p>
+                            )}
+                        </div>
+                    </form>
+            
+                    <hr/>
+            
+                    <RegisterForm />
+                </div>
+        
     }
 }
 
