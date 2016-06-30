@@ -1,4 +1,7 @@
 import Relay from 'react-relay';
+import {
+    toGlobalId
+} from 'graphql'
 
 class AddUserMutation extends Relay.Mutation {
 
@@ -18,19 +21,19 @@ class AddUserMutation extends Relay.Mutation {
 
         return Relay.QL`
           fragment on AddUserPayload {
-              viewer
+                viewer
           }
         `
     }
     getConfigs() {
 
         return [
-            {
-                type: 'FIELDS_CHANGE',
-                fieldIDs: {
-                    viewer: "1"
-                }
-            }
+            // {
+            //     type: 'FIELDS_CHANGE',
+            //     fieldIDs: {
+            //         viewer: "1"
+            //     }
+            // }
         ]
     }
     getVariables() {
