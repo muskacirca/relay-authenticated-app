@@ -14,7 +14,7 @@ class LoginBox extends React.Component {
                     <div className="col-sm-2 col-sm-offset-5 col-md-4 col-md-offset-4">
                         <div className="well">
                             <center>
-                                <img className="img-responsive" src="/style/images/lrds-logo-300px.png"/>
+                                <h1>Relay Authenticated App</h1>
                             </center>
                             <br />
                             <div className="panel-body">
@@ -64,7 +64,7 @@ class LoginForm extends React.Component {
 
     render() {
         return  <div>
-                    <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
+                    <form data-toggle="validator" role="form" className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
                         <div className="form-group">
                             <div className="input-group">
                                     <span className="input-group-addon" id="basic-addon1">

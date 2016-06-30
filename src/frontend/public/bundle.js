@@ -72256,7 +72256,11 @@
 	                        _react2.default.createElement(
 	                            'center',
 	                            null,
-	                            _react2.default.createElement('img', { className: 'img-responsive', src: '/style/images/lrds-logo-300px.png' })
+	                            _react2.default.createElement(
+	                                'h1',
+	                                null,
+	                                'Relay Authenticated App'
+	                            )
 	                        ),
 	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
@@ -72339,7 +72343,7 @@
 	                null,
 	                _react2.default.createElement(
 	                    'form',
-	                    { className: 'commentForm', onSubmit: this.handleSubmit.bind(this) },
+	                    { 'data-toggle': 'validator', role: 'form', className: 'commentForm', onSubmit: this.handleSubmit.bind(this) },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'form-group' },
@@ -72451,23 +72455,29 @@
 	            var password = this.refs.registerFormPassword.value;
 	            var confirmPassword = this.refs.registerFormConfirmPassword.value;
 	            var email = this.refs.registerFormEmail.value;
-	            var confirmmEmail = this.refs.registerFormConfirmPassword.value;
+	            var confirmEmail = this.refs.registerFormConfirmPassword.value;
 
-	            var addUserMutation = new _AddUserMutation2.default({
-	                login: login,
-	                password: password,
-	                email: email
-	            });
+	            if (password !== confirmPassword || email !== confirmEmail) {
 
-	            var onSuccess = function onSuccess(response) {
-	                console.log('user added successfully');
-	            };
+	                this.setState();
+	            } else {
 
-	            var onFailure = function onFailure(transaction) {
-	                return console.log("error adding user");
-	            };
+	                var addUserMutation = new _AddUserMutation2.default({
+	                    login: login,
+	                    password: password,
+	                    email: email
+	                });
 
-	            _reactRelay2.default.Store.commitUpdate(addUserMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	                var onSuccess = function onSuccess(response) {
+	                    console.log('user added successfully');
+	                };
+
+	                var onFailure = function onFailure(transaction) {
+	                    return console.log("error adding user");
+	                };
+
+	                _reactRelay2.default.Store.commitUpdate(addUserMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -72477,84 +72487,48 @@
 	                null,
 	                _react2.default.createElement(
 	                    'form',
-	                    { className: 'form-horizontal', name: 'registerForm' },
+	                    { 'data-toggle': 'validator', role: 'form', className: 'form-horizontal', name: 'registerForm' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'registerFormEventName', className: 'col-md-3 control-label' },
-	                            'login'
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-9' },
-	                            _react2.default.createElement('input', { ref: 'registerFormEventName', id: 'registerFormEventName', type: 'text', className: 'form-control', placeholder: 'name' })
-	                        )
+	                        _react2.default.createElement('input', { ref: 'registerFormEventName', id: 'registerFormEventName', type: 'text',
+	                            className: 'form-control', placeholder: 'login', required: true })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'registerFormPassword', className: 'col-md-3 control-label' },
-	                            'password'
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-9' },
-	                            _react2.default.createElement('input', { ref: 'registerFormPassword', id: 'registerFormPassword', type: 'text', className: 'form-control', placeholder: 'password' })
-	                        )
+	                        _react2.default.createElement('input', { ref: 'registerFormPassword', id: 'registerFormPassword', type: 'password',
+	                            className: 'form-control', placeholder: 'password', required: true })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'registerFormEventDescription', className: 'col-md-3 control-label' },
-	                            'confirm password'
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-9' },
-	                            _react2.default.createElement('input', { ref: 'registerFormConfirmPassword', id: 'registerFormConfirmPassword', className: 'form-control', placeholder: 'confirm password' })
-	                        )
+	                        _react2.default.createElement('input', { ref: 'registerFormConfirmPassword', id: 'registerFormConfirmPassword', type: 'password',
+	                            className: 'form-control', placeholder: 'confirm password',
+	                            'data-match': '#registerFormPassword', 'data-match-error': 'Whoops, these don\'t match', required: true }),
+	                        _react2.default.createElement('div', { className: 'help-block with-errors' })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'registerFormEmail', className: 'col-md-3 control-label' },
-	                            'email'
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-9' },
-	                            _react2.default.createElement('input', { ref: 'registerFormEmail', id: 'registerFormEmail', className: 'form-control', placeholder: 'confirm email' })
-	                        )
+	                        _react2.default.createElement('input', { ref: 'registerFormEmail', id: 'registerFormEmail', className: 'form-control',
+	                            placeholder: 'confirm email', required: true })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'registerFormConfirmEmail', className: 'col-md-3 control-label' },
-	                            'confirm email'
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-9' },
-	                            _react2.default.createElement('input', { ref: 'registerFormConfirmEmail', id: 'registerFormConfirmEmail', className: 'form-control', placeholder: 'confirm email' })
-	                        )
+	                        _react2.default.createElement('input', { ref: 'registerFormConfirmEmail', id: 'registerFormConfirmEmail',
+	                            className: 'form-control', placeholder: 'confirm email',
+	                            'data-match': '#registerFormEmail', 'data-match-error': 'Whoops, these don\'t match' }),
+	                        _react2.default.createElement('div', { className: 'help-block with-errors' })
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'form-group' },
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btn-default', type: 'submit', onClick: this.onAddEvent.bind(this) },
-	                            'OK'
+	                            { className: 'btn btn-default btn-block', type: 'submit', onClick: this.onAddEvent.bind(this) },
+	                            'Register'
 	                        )
 	                    )
 	                )
