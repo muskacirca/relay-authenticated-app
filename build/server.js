@@ -57,7 +57,7 @@ module.exports =
 
 	var _schema = __webpack_require__(3);
 
-	var _expressGraphql = __webpack_require__(12);
+	var _expressGraphql = __webpack_require__(13);
 
 	var _expressGraphql2 = _interopRequireDefault(_expressGraphql);
 
@@ -65,17 +65,33 @@ module.exports =
 
 	var _database2 = _interopRequireDefault(_database);
 
-	var _jsonwebtoken = __webpack_require__(13);
+	var _jsonwebtoken = __webpack_require__(14);
 
 	var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
-	var _bodyParser = __webpack_require__(14);
+	var _bodyParser = __webpack_require__(15);
 
 	var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-	var _crypto = __webpack_require__(15);
+	var _crypto = __webpack_require__(16);
 
 	var _crypto2 = _interopRequireDefault(_crypto);
+
+	var _multer = __webpack_require__(17);
+
+	var _multer2 = _interopRequireDefault(_multer);
+
+	var _fs = __webpack_require__(18);
+
+	var _fs2 = _interopRequireDefault(_fs);
+
+	var _lodash = __webpack_require__(19);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _sanitizeFilename = __webpack_require__(20);
+
+	var _sanitizeFilename2 = _interopRequireDefault(_sanitizeFilename);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -102,6 +118,57 @@ module.exports =
 	    res.sendFile(_path2.default.resolve(__dirname, "../src/frontend/public/bundle.js"));
 	});
 
+	var storage = _multer2.default.memoryStorage();
+
+	var multerMiddleware = (0, _multer2.default)({ storage: storage }).fields([{ name: 'image' }]);
+
+	var uploadMiddleWare = function uploadMiddleWare(req, res, next) {
+	    multerMiddleware(req, res, function () {
+	        // request contains file data in req.files in format
+	        // {
+	        //   key: [{
+	        //     fieldname,
+	        //     originalname,
+	        //     encoding,
+	        //     mimetype,
+	        //     buffer,
+	        //     size
+	        //   }]
+	        // }
+
+	        // convert to array in format
+	        // [
+	        //   [fieldname, originalname ...]
+	        // ]
+	        var files = _lodash2.default.values(req.files);
+
+	        if (!files || files.length === 0) {
+	            next();
+	            return;
+	        }
+
+	        // Parse variables so we can add to them. (express-graphql won't parse them again once populated)
+	        req.body.variables = JSON.parse(req.body.variables);
+
+	        files.forEach(function (fileArray) {
+	            console.log("there's a file");
+	            var file = fileArray[0];
+	            var filename = Date.now() + '_' + (0, _sanitizeFilename2.default)(file.originalname.replace(/[`~!@#$%^&*()_|+\-=÷¿?;:'",<>\{\}\[\]\\\/]/gi, ''));
+
+	            // save file to disk
+	            var filePath = _path2.default.join(__dirname, '../src/images', filename);
+	            _fs2.default.writeFileSync(filePath, file.buffer);
+
+	            // add files to graphql input. we only support single images here
+	            req.body.variables.input_0[file.fieldname] = '/images/' + filename;
+	        });
+
+	        next();
+	    });
+	};
+
+	app.use('/graphql', uploadMiddleWare);
+
 	app.use('/graphql', (0, _expressGraphql2.default)({ schema: _schema.Schema, pretty: true, graphiql: true }));
 
 	app.post('/api/authenticate', function (request, response) {
@@ -109,7 +176,6 @@ module.exports =
 	    _database2.default.models.user.findOne({ where: { login: request.body.login } }).then(function (user) {
 
 	        var password = _crypto2.default.createHash("sha256").update(request.body.password).digest("base64");
-
 	        if (user.password != password) {
 
 	            response.json({
@@ -140,7 +206,6 @@ module.exports =
 	app.listen(server_port, function (err) {
 	    if (err) return console.log(err);
 	    console.log('Server is now running on port ' + server_port);
-	    console.log("process.env.PROD_URL: " + process.env.PROD_URL);
 	});
 
 /***/ },
@@ -172,13 +237,16 @@ module.exports =
 
 	var _UserMutation = __webpack_require__(11);
 
+	var _FileMutation = __webpack_require__(12);
+
 	var _Model = __webpack_require__(9);
 
 	var Mutation = new _graphql.GraphQLObjectType({
 	    name: 'Mutation',
 	    fields: {
 	        addShop: _ShopMutations.AddShopMutation,
-	        addUser: _UserMutation.AddUserMutation
+	        addUser: _UserMutation.AddUserMutation,
+	        addFile: _FileMutation.AddFileMutation
 	    }
 	});
 
@@ -320,8 +388,8 @@ module.exports =
 
 	var mysql_url = process.env.PROD_URL || "localhost";
 	var mysql_schema = process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "services";
-	var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "greec";
-	var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "test";
+	var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "services";
+	var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "services";
 
 	var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
 	    pool: {
@@ -395,7 +463,6 @@ module.exports =
 	 * The first argument defines the way to resolve an ID to its object.
 	 * The second argument defines the way to resolve a node object to its GraphQL type.
 	 */
-
 	var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
 	    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(globalId);
 
@@ -557,7 +624,7 @@ module.exports =
 	    function Viewer() {
 	        _classCallCheck(this, Viewer);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (Viewer.__proto__ || Object.getPrototypeOf(Viewer)).apply(this, arguments));
 	    }
 
 	    return Viewer;
@@ -644,27 +711,98 @@ module.exports =
 
 /***/ },
 /* 12 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("express-graphql");
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AddFileMutation = undefined;
+
+	var _graphql = __webpack_require__(4);
+
+	var _graphqlRelay = __webpack_require__(6);
+
+	var _database = __webpack_require__(7);
+
+	var _database2 = _interopRequireDefault(_database);
+
+	var _Model = __webpack_require__(9);
+
+	var _UserStore = __webpack_require__(10);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AddFileMutation = exports.AddFileMutation = new _graphqlRelay.mutationWithClientMutationId({
+	    name: 'AddFile',
+	    description: 'Function to add a file',
+	    inputFields: {
+	        image: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+	    },
+	    outputFields: {
+	        viewer: {
+	            type: _Model.ViewerType,
+	            resolve: function resolve(obj) {
+	                return (0, _UserStore.getViewer)(obj.viewerId);
+	            }
+	        }
+	    },
+	    mutateAndGetPayload: function mutateAndGetPayload(args) {
+
+	        console.log("args : " + JSON.stringify(args));
+	        console.log("yop");
+	        return [];
+	    }
+	});
 
 /***/ },
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = require("jsonwebtoken");
+	module.exports = require("express-graphql");
 
 /***/ },
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = require("body-parser");
+	module.exports = require("jsonwebtoken");
 
 /***/ },
 /* 15 */
 /***/ function(module, exports) {
 
+	module.exports = require("body-parser");
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
 	module.exports = require("crypto");
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	module.exports = require("multer");
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	module.exports = require("fs");
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	module.exports = require("lodash");
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	module.exports = require("sanitize-filename");
 
 /***/ }
 /******/ ]);

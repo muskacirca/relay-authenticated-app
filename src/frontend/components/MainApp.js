@@ -1,7 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 
-import NavBarBox from './navbar'
+import NavBarBox from './Navbar'
 
 import {
     toggleClassInBody

@@ -3,6 +3,16 @@ schema {
   mutation: Mutation
 }
 
+input AddFileInput {
+  image: String!
+  clientMutationId: String!
+}
+
+type AddFilePayload {
+  viewer: Viewer
+  clientMutationId: String!
+}
+
 input AddShopInput {
   name: String!
   description: String!
@@ -30,41 +40,69 @@ type AddUserPayload {
 type Mutation {
   addShop(input: AddShopInput!): AddShopPayload
   addUser(input: AddUserInput!): AddUserPayload
+  addFile(input: AddFileInput!): AddFilePayload
 }
 
+# An object with an ID
 interface Node {
+  # The id of the object.
   id: ID!
 }
 
+# Information about pagination in a connection.
 type PageInfo {
+  # When paginating forwards, are there more items?
   hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
   hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
   startCursor: String
+
+  # When paginating forwards, the cursor to continue.
   endCursor: String
 }
 
 type Root {
   viewer(viewerId: Int!): Viewer
-  node(id: ID!): Node
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
 }
 
+# It represents a shop
 type ShopType implements Node {
+  # The ID of an object
   id: ID!
   name: String
   description: String
 }
 
+# A connection to a list of items.
 type ShopTypeConnection {
+  # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # A list of edges.
   edges: [ShopTypeEdge]
 }
 
+# An edge in a connection.
 type ShopTypeEdge {
+  # The item at the end of the edge
   node: ShopType
+
+  # A cursor for use in pagination
   cursor: String!
 }
 
+# It display the information related to an user
 type UserType implements Node {
+  # The ID of an object
   id: ID!
   login: String
   password: String
@@ -72,6 +110,7 @@ type UserType implements Node {
 }
 
 type Viewer implements Node {
+  # The ID of an object
   id: ID!
   user: UserType
   shops(after: String, first: Int, before: String, last: Int): ShopTypeConnection

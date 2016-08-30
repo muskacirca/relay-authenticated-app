@@ -1,7 +1,7 @@
 import Relay from 'react-relay';
 import {
     toGlobalId
-} from 'graphql'
+} from 'graphql-relay'
 
 class AddUserMutation extends Relay.Mutation {
 

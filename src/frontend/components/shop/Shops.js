@@ -3,7 +3,7 @@ import Relay from 'react-relay'
 
 import UserService from '../utils/AuthService'
 
-import AddShopMutation from '../../mutations/AddShopMutation'
+import AddFileMutation from '../../mutations/AddFileMutation'
 
 
 class StockComponent extends React.Component {
@@ -15,30 +15,32 @@ class StockComponent extends React.Component {
         }
     }
 
-    addItemToCart(name, description) {
-        
-        var addShopMutation = new AddShopMutation({
-            viewerId: UserService.getUserId(),
-            name: name,
-            description: description
+    handleSubmit(e) {
+
+        e.preventDefault();
+
+        let fileToAttach = this.refs.fileInput.files.item(0);
+        let addFileMutation = new AddFileMutation({
+            viewer: this.props.viewer,
+            image: fileToAttach
         });
 
-        var onSuccess = (response) => console.log("Item shop successfully");
+        let onSuccess = (response) => console.log("success");
 
-        var onFailure = (transaction) => console.log("Error adding shop");
+        let onFailure = (transaction) => console.log("Error");
 
-        Relay.Store.commitUpdate(addShopMutation, {onSuccess, onFailure})
+        Relay.Store.commitUpdate(addFileMutation, {onSuccess, onFailure})
     }
     
 
     render() {
 
-        let shops = this.props.viewer.shops.edges;
-        console.log("shops : " + JSON.stringify(shops));
-        
         return (
             <div>
-                Shops
+                <form onSubmit={this.handleSubmit.bind(this)}>
+                    <input ref="fileInput" type="file" />
+                    <button type="submit">ADD</button>
+                </form>
             </div>
         )
     }
@@ -48,7 +50,7 @@ class StockComponent extends React.Component {
 
 StockComponent.contextTypes = {
     router: React.PropTypes.object.isRequired
-}
+};
 
 export default Relay.createContainer(StockComponent, {
     

@@ -27,7 +27,7 @@ var Viewer = exports.Viewer = function (_Object) {
     function Viewer() {
         _classCallCheck(this, Viewer);
 
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Viewer.__proto__ || Object.getPrototypeOf(Viewer)).apply(this, arguments));
     }
 
     return Viewer;

@@ -12,6 +12,11 @@ import {
 } from './graphql/UserMutation'
 
 import {
+    AddFileMutation
+} from './graphql/FileMutation'
+
+
+import {
     GraphQLRoot
 } from './graphql/Model'
 
@@ -20,7 +25,8 @@ var Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
         addShop: AddShopMutation,
-        addUser: AddUserMutation
+        addUser: AddUserMutation,
+        addFile: AddFileMutation
     }
 });
 

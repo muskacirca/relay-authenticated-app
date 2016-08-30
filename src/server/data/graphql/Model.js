@@ -71,7 +71,7 @@ export var ShopType = new GraphQLObjectType({
         description: {type: GraphQLString, resolve: (obj) => obj.description}
     },
     interfaces: [nodeInterface]
-})
+});
 
 export var UserType = new GraphQLObjectType({
     name: 'UserType',
@@ -135,7 +135,7 @@ export var GraphQLRoot = new GraphQLObjectType({
             resolve: (root, {viewerId}) => {
                 return Database.models.user.findOne({where: {id: viewerId}})
                     .then(response => {
-                        registerViewer(response)
+                        registerViewer(response);
                         return getViewer(response.id)
                     })
             }

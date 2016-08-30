@@ -1,9 +1,9 @@
 import Sequelize from 'sequelize'
 
-var mysql_url =  process.env.PROD_URL || "localhost"
-var mysql_schema =  process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "services"
-var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "greec"
-var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "test"
+var mysql_url =  process.env.PROD_URL || "localhost";
+var mysql_schema =  process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "services";
+var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "services";
+var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "services";
 
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL, {
     pool: {
@@ -13,7 +13,7 @@ const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequeliz
     },
 })
     :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: mysql_url,
-        logging: (param) => {param.indexOf("Executing (default):") !== -1 ? false : true}})
+        logging: (param) => {param.indexOf("Executing (default):") !== -1 ? false : true}});
 
 
 const shop = connection.define('shop', {
@@ -27,7 +27,7 @@ const shop = connection.define('shop', {
         type: Sequelize.STRING
     }
 
-}, {timestamps: false})
+}, {timestamps: false});
 
 
 connection.define('user', {
@@ -40,7 +40,7 @@ connection.define('user', {
     } , {timestamps: false, tableName: 'users', freezeTableName: true,}
 );
 
-connection.sync({force: false})
+connection.sync({force: false});
 
 
 export default connection

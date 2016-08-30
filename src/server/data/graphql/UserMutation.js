@@ -14,8 +14,6 @@ import {
     ViewerType
 } from './Model'
 
-
-
 import {
     getViewer,
 } from '../stores/UserStore';
