@@ -11,13 +11,16 @@ var _ShopMutations = require('./graphql/ShopMutations');
 
 var _UserMutation = require('./graphql/UserMutation');
 
+var _FileMutation = require('./graphql/FileMutation');
+
 var _Model = require('./graphql/Model');
 
 var Mutation = new _graphql.GraphQLObjectType({
     name: 'Mutation',
     fields: {
         addShop: _ShopMutations.AddShopMutation,
-        addUser: _UserMutation.AddUserMutation
+        addUser: _UserMutation.AddUserMutation,
+        addFile: _FileMutation.AddFileMutation
     }
 });
 

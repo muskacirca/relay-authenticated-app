@@ -12,8 +12,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mysql_url = process.env.PROD_URL || "localhost";
 var mysql_schema = process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "services";
-var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "greec";
-var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "test";
+var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "services";
+var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "services";
 
 var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
     pool: {
